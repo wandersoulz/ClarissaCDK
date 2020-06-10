@@ -16,9 +16,7 @@ export class ClarissaCdkStack extends Stack {
       runtime: lambda.Runtime.GO_1_X,
       environment: {
         "CONTEXT_SIZE": "5"
-      },
-      timeout: Duration.seconds(10),
-      memorySize: 512
+      }
     });
       
     const version = func.latestVersion;
