@@ -91,16 +91,14 @@ export class PipelineStack extends Stack {
                 output: sourceCdkOutput,
                 "oauthToken": gitHubToken,
                 "owner": gitHubOwner,
-                "repo": "ClarissaCDK",
-                "trigger": GitHubTrigger.POLL
+                "repo": "ClarissaCDK"
               }),
               new GitHubSourceAction({
                 actionName: "LambdaCode_Update",
                 output: sourceLambdaOutput,
                 "oauthToken": gitHubToken,
                 "owner": gitHubOwner,
-                "repo": "randomname-lambda",
-                "trigger": GitHubTrigger.POLL
+                "repo": "randomname-lambda"
               })
             ],
           },

@@ -1,6 +1,6 @@
 import * as codedeploy from '@aws-cdk/aws-codedeploy';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { Construct, Stack, StackProps } from '@aws-cdk/core';
+import { Construct, Stack, StackProps, Duration } from '@aws-cdk/core';
 
 export class ClarissaCdkStack extends Stack {
   public readonly lambdaCode: lambda.CfnParametersCode;
@@ -13,7 +13,12 @@ export class ClarissaCdkStack extends Stack {
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
       handler: 'main',
-      runtime: lambda.Runtime.GO_1_X
+      runtime: lambda.Runtime.GO_1_X,
+      environment: {
+        "CONTEXT_SIZE": "5"
+      },
+      timeout: Duration.seconds(10),
+      memorySize: 512
     });
       
     const version = func.latestVersion;
