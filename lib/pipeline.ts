@@ -79,7 +79,7 @@ export class PipelineStack extends Stack {
       const sourceLambdaOutput = new Artifact();
       const cdkBuildOutput = new Artifact('CdkBuildOutput');
       const lambdaBuildOutput = new Artifact('LambdaBuildOutput');
-      const gitHubToken = Secret.fromSecretArn(this, "GitHubTokenSecret", "arn:aws:secretsmanager:us-east-1:399907205041:secret:GitHubToken-3oX8nW").secretValue
+      const gitHubToken = Secret.fromSecretArn(this, "GitHubTokenSecret", "arn:aws:secretsmanager:us-east-1:399907205041:secret:GitHubTokenString-bofHoJ").secretValue
       const gitHubOwner = "wandersoulz";
       new Pipeline(this, 'Pipeline', {
         stages: [
@@ -91,14 +91,16 @@ export class PipelineStack extends Stack {
                 output: sourceCdkOutput,
                 "oauthToken": gitHubToken,
                 "owner": gitHubOwner,
-                "repo": "ClarissaCDK"
+                "repo": "ClarissaCDK",
+                "branch": "master"
               }),
               new GitHubSourceAction({
                 actionName: "LambdaCode_Update",
                 output: sourceLambdaOutput,
                 "oauthToken": gitHubToken,
                 "owner": gitHubOwner,
-                "repo": "randomname-lambda"
+                "repo": "randomname-lambda",
+                "branch": "master"
               })
             ],
           },
