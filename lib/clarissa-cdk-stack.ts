@@ -1,33 +1,22 @@
-import * as codedeploy from '@aws-cdk/aws-codedeploy';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { Construct, Stack, StackProps, Duration } from '@aws-cdk/core';
+import { Code, Function, Runtime, CfnParametersCode } from '@aws-cdk/aws-lambda';
+import { App, Stack, StackProps } from '@aws-cdk/core';
 
 export class ClarissaCdkStack extends Stack {
-  public readonly lambdaCode: lambda.CfnParametersCode;
+  public readonly lambdaCode: CfnParametersCode;
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    this.lambdaCode = lambda.Code.fromCfnParameters();
+    this.lambdaCode = Code.fromCfnParameters();
       
-    const func = new lambda.Function(this, 'Lambda', {
+    new Function(this, 'RandomNameGenerator', {
       code: this.lambdaCode,
       handler: 'main',
-      runtime: lambda.Runtime.GO_1_X,
+      runtime: Runtime.GO_1_X,
       environment: {
         "CONTEXT_SIZE": "5"
-      }
-    });
-      
-    const version = func.latestVersion;
-    const alias = new lambda.Alias(this, 'LambdaAlias', {
-      aliasName: 'Prod',
-      version,
-    });
-      
-    new codedeploy.LambdaDeploymentGroup(this, 'DeploymentGroup', {
-      alias,
-      deploymentConfig: codedeploy.LambdaDeploymentConfig.LINEAR_10PERCENT_EVERY_1MINUTE,
+      },
+      functionName: "RandomNameGenerator"
     });
   }
 }
